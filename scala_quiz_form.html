@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz de Scala</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
+    h1 { color: #333; }
+    .question { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px #ccc; }
+    .question h3 { margin-top: 0; }
+    .answers label { display: block; margin: 5px 0; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+    .result { font-weight: bold; margin-top: 20px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>Quiz de Scala</h1>
+  <form id="quizForm">
+    <!-- Perguntas serão inseridas aqui via JavaScript -->
+    <button type="submit">Enviar</button>
+    <div class="result" id="result"></div>
+  </form>
+
+  <script>
+    const questions = [
+      {
+        q: "Qual palavra-chave é usada para definir uma variável imutável em Scala?",
+        options: ["var", "val", "let", "const"],
+        answer: 1
+      },
+      {
+        q: "Qual é o tipo de retorno padrão de uma função que não retorna nada em Scala?",
+        options: ["None", "Unit", "Void", "Null"],
+        answer: 1
+      },
+      {
+        q: "O que o operador :_* faz em Scala?",
+        options: ["Concatena strings", "Transforma uma lista em um conjunto", "Expande uma sequência para argumentos variádicos", "Aplica uma função parcialmente"],
+        answer: 2
+      },
+      {
+        q: "Qual destas coleções é mutável em Scala?",
+        options: ["List", "Set", "Map", "ArrayBuffer"],
+        answer: 3
+      },
+      {
+        q: "Qual é o resultado de Some(2).getOrElse(0)?",
+        options: ["None", "0", "2", "Some(2)"],
+        answer: 2
+      },
+      {
+        q: "O que é um case class em Scala?",
+        options: ["Uma classe abstrata", "Uma classe usada exclusivamente para testes", "Uma classe com correspondência de padrão (pattern matching) e métodos auxiliares gerados automaticamente", "Uma classe usada para herança múltipla"],
+        answer: 2
+      },
+      {
+        q: "Qual é a estrutura correta para criar uma função anônima (lambda) em Scala?",
+        options: ["(x => x + 1)", "function(x) { x + 1 }", "x -> x + 1", "def(x): x + 1"],
+        answer: 0
+      },
+      {
+        q: "Qual método transforma uma lista [1, 2, 3] em [2, 4, 6]?",
+        options: ["filter(_ * 2)", "flatMap(_ * 2)", "map(_ * 2)", "reduce(_ * 2)"],
+        answer: 2
+      },
+      {
+        q: "O que sealed faz em uma trait ou classe?",
+        options: ["Torna a classe final", "Impede que a classe seja usada fora do arquivo atual", "Restringe a extensão da classe ao mesmo arquivo", "Permite múltiplas heranças"],
+        answer: 2
+      },
+      {
+        q: "Qual é a diferença entre == e eq em Scala?",
+        options: ["Nenhuma, são equivalentes", "== compara referências, eq compara valores", "== compara valores, eq compara referências", "eq é usado para tipos primitivos apenas"],
+        answer: 2
+      },
+      {
+        q: "O que o método flatMap faz?",
+        options: ["Remove elementos nulos de uma lista", "Aplica uma função e concatena os resultados", "Mapeia valores com uma função e retorna tuplas", "Aplica uma função em paralelo"],
+        answer: 1
+      },
+      {
+        q: "Qual é a forma correta de importar todas as funções de um pacote em Scala?",
+        options: ["import scala.util.*", "include scala.util._", "import scala.util._", "use scala.util._"],
+        answer: 2
+      },
+      {
+        q: "O que é um trait em Scala?",
+        options: ["Um tipo de variável", "Uma interface que pode conter implementação", "Um construtor privado", "Um tipo de classe imutável"],
+        answer: 1
+      },
+      {
+        q: "Qual é o tipo retornado por List(1,2,3).reduce(_ + _)?",
+        options: ["Int", "Option[Int]", "List[Int]", "Tuple3[Int, Int, Int]"],
+        answer: 0
+      },
+      {
+        q: "Qual opção representa um for comprehension válido em Scala?",
+        options: ["for x in list: yield x*2", "for(x <- list) yield x * 2", "foreach x in list => x*2", "for x <- list then x * 2"],
+        answer: 1
+      }
+    ];
+
+    const form = document.getElementById("quizForm");
+    const result = document.getElementById("result");
+
+    questions.forEach((q, index) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>${index + 1}. ${q.q}</h3>`;
+      const answers = document.createElement("div");
+      answers.className = "answers";
+
+      q.options.forEach((option, i) => {
+        const label = document.createElement("label");
+        label.innerHTML = `<input type="radio" name="q${index}" value="${i}" required> ${option}`;
+        answers.appendChild(label);
+      });
+
+      div.appendChild(answers);
+      form.insertBefore(div, form.querySelector("button"));
+    });
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = form.querySelector(`input[name=q${i}]:checked`);
+        if (selected && parseInt(selected.value) === q.answer) {
+          score++;
+        }
+      });
+      result.textContent = `Você acertou ${score} de ${questions.length} perguntas.`;
+    });
+  </script>
+</body>
+</html>
